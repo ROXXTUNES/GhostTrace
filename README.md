@@ -66,13 +66,23 @@ Every design decision in GhostTrace flows from four principles. When in doubt ab
 
 ### 1. 🔌 Single-File, Zero-Footprint Portability
 
-GhostTrace is **one `.ps1` file**. Copy it to a USB stick, a network share, an admin workstation. Double-click it. It runs. There is:
+GhostTrace is **one `.ps1` file**[cite: 1]. Double-click it or run it from a shell, and it launches immediately[cite: 1, 10]. There is:
 
-- **No installation.** No MSI, no setup wizard, no registry writes on the host.
-- **No external dependencies.** No `.dll` files to ship alongside. No runtime to install. Windows 10/11 and Windows Server have everything needed out of the box (PowerShell 5.1 ships with Windows).
-- **No permanent artifacts.** GhostTrace does not write to `Program Files`, does not register itself, does not create shortcuts. Close it, and the only trace it leaves is whatever files *you* export.
+- **No installation:**  No setup wizard, no MSI installers, and no registry configuration keys created on the computer[cite: 1].
+- **No external dependencies:** No external `.dll` binaries or third-party frameworks to ship alongside[cite: 1]. Windows OS include everything required natively (PowerShell 5.1+ ships out of the box with the OS)[cite: 1].
+- **No persistent disk artifacts:** GhostTrace does not install itself into `Program Files`, register background services, or leave shortcuts behind[cite: 1, 5]. Close the application, and the only trace left on disk is whatever data reports *you* explicitly choose to export[cite: 1].
 
-**Why this matters: incident response.** In a forensic or IR context, *installing software alters the machine*. Every install writes to the registry, touches drive sectors, changes timestamps. GhostTrace can be run entirely from RAM — from a mounted USB stick — without modifying the target system in any way. This is why it's a `.ps1` and not a compiled `.exe`.
+**Why this matters for everyday use** The reason GhostTrace is a single portable file is simple: convenience.I didn't want GhostTrace to become another application that needs to be installed, configured, maintained, and eventually forgotten about on a computer. I wanted it to follow a much simpler workflow:
+> Open → **Run** → **Analyze** → Close.
+That's it.
+
+**The idea isn't that GhostTrace needs to be permanently installed. The idea is that it doesn't need to be.**
+
+This also keeps the project intentionally simple. There is no background agent, scheduled service, tray application, database, or always-running component whose job is to continuously watch your system. GhostTrace runs when you open it, performs the task you've asked it to perform, and stops when you're finished.
+
+That's the kind of software I wanted to make:
+
+*A **utility**, not a commitment.*
 
 ### 2. 🔒 Read-Only by Design
 
@@ -534,18 +544,18 @@ Every export contains a summary block with:
 
 The results will show both filesystem residue and registry keys. Export to Excel, look at the `Registry` type rows, and examine which `HKLM\Software\Adobe` subkeys remain. You can now decide what to remove manually.
 
-### Scenario 2 — *"My C: Drive Gained 20 GB Overnight and I Don't Know Why"*
+### Scenario 2 — *"My C: Drive Gained 5 GB Overnight and I Don't Know Why"*
 
 **Goal:** Find the culprit without knowing the software name.
 
 1. Launch GhostTrace.
 2. Enable **Timeframe Space Analyzer**.
 3. Set the date range to *yesterday → today*.
-4. Set Min Size to `50 MB`.
+4. Set Min Size to `10 MB`.
 5. Target: `C:\`
 6. Run.
 
-The results show every file >50 MB that was created or modified in that window. Sort by SizeMB descending. The top results will almost always be the culprit.
+The results show every file >10 MB that was created or modified in that window. Sort by SizeMB descending. The top results will almost always be the culprit.
 
 ### Scenario 3 — *"I Want to Move All My Video Projects Off This Drive Before Formatting"*
 
@@ -556,8 +566,7 @@ The results show every file >50 MB that was created or modified in that window. 
 3. Enable **DEEP Scan**.
 4. Target: the drive.
 5. Run.
-6. Click **CALC SIZES** to get exact totals.
-7. Click **EXPORT XLSX** to save the full list with paths and sizes.
+6. Click **EXPORT XLSX** to save the full list with paths and sizes.
 
 ### Scenario 4 — *"Is This USB Drive Safe to Plug Into My Machine?"*
 
