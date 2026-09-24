@@ -66,11 +66,11 @@ Every design decision in GhostTrace flows from four principles. When in doubt ab
 
 ### 1. 🔌 Single-File, Zero-Footprint Portability
 
-GhostTrace is **one `.ps1` file**[cite: 1]. Double-click it or run it from a shell, and it launches immediately[cite: 1, 10]. There is:
+GhostTrace is **one `.ps1` file**. Double-click it or run it from a shell, and it launches immediately. There is:
 
-- **No installation:**  No setup wizard, no MSI installers, and no registry configuration keys created on the computer[cite: 1].
-- **No external dependencies:** No external `.dll` binaries or third-party frameworks to ship alongside[cite: 1]. Windows OS include everything required natively (PowerShell 5.1+ ships out of the box with the OS)[cite: 1].
-- **No persistent disk artifacts:** GhostTrace does not install itself into `Program Files`, register background services, or leave shortcuts behind[cite: 1, 5]. Close the application, and the only trace left on disk is whatever data reports *you* explicitly choose to export[cite: 1].
+- **No installation:**  No setup wizard, no MSI installers, and no registry configuration keys created on the computer.
+- **No external dependencies:** No external `.dll` binaries or third-party frameworks to ship alongside. Windows OS include everything required natively (PowerShell 5.1+ ships out of the box with the OS).
+- **No persistent disk artifacts:** GhostTrace does not install itself into `Program Files`, register background services, or leave shortcuts behind. Close the application, and the only trace left on disk is whatever data reports *you* explicitly choose to export
 
 **Why this matters for everyday use** The reason GhostTrace is a single portable file is simple: convenience.I didn't want GhostTrace to become another application that needs to be installed, configured, maintained, and eventually forgotten about on a computer. I wanted it to follow a much simpler workflow:
 > Open → **Run** → **Analyze** → Close.
